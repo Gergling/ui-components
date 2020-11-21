@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import serviceFactory from './delimitedTextInputServiceFactory';
 
 const Container = styled.div`
   border: solid 1px grey;
@@ -17,68 +17,13 @@ const Input = styled.input`
   text-align: center;
 `;
 
-class Service {
-  constructor(delimiter, setState) {
-    this._setState = setState;
-    this.setDelimiter(delimiter);
-    this._items = [];
-  }
-  getDelimiter() {
-    return this._delimiter;
-  }
-  getItems() {
-    return this._items;
-  }
-  setDelimiter(delimiter) {
-    this._delimiter = delimiter;
-    this._setState(this);
-    return this;
-  }
-  setDelimitations(delimitations) {
-    Array
-      .from({ length: delimitations })
-      .forEach((junk, idx) => this._items.push({ width: 24, idx }));
-    this._setState(this);
-    return this;
-  }
-  setItemWidth(width, idx) {
-    if (typeof idx === 'undefined') {
-      this._items.forEach(item => item.width = width);
-    } else {
-      if (idx < this._items.length) {
-        this._items[idx].width = width;
-      } else {
-        this.setDelimitations(idx + 1);
-        this.setItemWidth(width, idx);
-      }
-    }
-    this._setState(this);
-    return this;
-  }
-  setItem(value, idx) {
-    console.log(value, idx)
-    if (typeof idx === 'undefined') {
-      this._items.push({ width: 24, idx: this._items.length + 1, value });
-    } else {
-      if (idx < this._items.length) {
-        this._items[idx].value = value;
-      } else {
-        this.setDelimitations(idx + 1);
-        this.setItem(value, idx);
-      }
-    }
-    this._setState(this);
-    return this;
-  }
-}
-
 export default class DelimitedTextInput extends Component {
   constructor(props) {
     super(props);
     if (typeof props.onUpdate !== 'function') {
       throw new Error('DelimitedTextInput requires onUpdate(service, delta) function');
     }
-    this.service = new Service('-', service => {
+    this.service = serviceFactory('-', service => {
       this.setState({
         items    : service.getItems(),
         delimiter: service.getDelimiter()

@@ -19,4 +19,4 @@ function onUpdate(service, delta) {
 }
 
 storiesOf('DelimitedTextInput', module)
-  .add('default', () => <DelimitedTextInput onUpdate={onUpdate} />);
+  .add('in date DD/MM/YYYY format', () => <DelimitedTextInput onUpdate={onUpdate} />);
