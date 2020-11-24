@@ -7,7 +7,9 @@
   "scripts": {
     "test": "jest",
     "test-watch": "jest --watch",
-    "start": "start-storybook -p 6006 --ci"
+    "start": "start-storybook -p 6006 --ci",
+    "deploy-storybook": "storybook-to-ghpages",
+    "build-storybook": "build-storybook -s ui-components"
   },
   "author": "Greg Davies <gregmichaeldavies@gmail.com>",
   "license": "ISC",
@@ -22,6 +24,7 @@
     "@storybook/addon-links": "5.0.11",
     "@storybook/addons": "5.0.11",
     "@storybook/react": "6.1.0",
+    "@storybook/storybook-deployer": "2.8.7",
     "jest": "26.6.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
