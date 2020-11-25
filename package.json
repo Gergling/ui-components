@@ -12,6 +12,11 @@
     "build-storybook": "build-storybook -s ui-components",
     "deploy": "storybook-to-ghpages --ci"
   },
+  "storybook-deployer": {
+    "gitUsername": "Gergling via storybook-deployer",
+    "gitEmail": "gregmichaeldavies@gmail.com",
+    "commitMessage": "Deploy Storybook"
+  },
   "author": "Greg Davies <gregmichaeldavies@gmail.com>",
   "license": "ISC",
   "devDependencies": {
