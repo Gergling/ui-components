@@ -9,7 +9,8 @@
     "test-watch": "jest --watch",
     "start": "start-storybook -p 6006 --ci",
     "deploy-storybook": "storybook-to-ghpages",
-    "build-storybook": "build-storybook -s ui-components"
+    "build-storybook": "build-storybook -s ui-components",
+    "deploy": "storybook-to-ghpages --ci"
   },
   "author": "Greg Davies <gregmichaeldavies@gmail.com>",
   "license": "ISC",
