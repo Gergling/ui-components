@@ -9,13 +9,13 @@
     "test-watch": "jest --watch",
     "start": "start-storybook -p 6006 --ci",
     "deploy-storybook": "storybook-to-ghpages",
-    "build-storybook": "build-storybook -s ui-components",
+    "build-storybook": "build-storybook -s ui-components -o build",
     "deploy": "storybook-to-ghpages --ci"
   },
   "storybook-deployer": {
     "gitUsername": "Gergling via storybook-deployer",
     "gitEmail": "gregmichaeldavies@gmail.com",
-    "commitMessage": "Deploy Storybook"
+    "commitMessage": "Deploy Storybook to GH Pages"
   },
   "author": "Greg Davies <gregmichaeldavies@gmail.com>",
   "license": "ISC",
