@@ -4,7 +4,7 @@ on:
     paths: ["stories/**", "src/**"] # Trigger the action only when files change in the folders defined here
   workflow_dispatch:
 
-# jobs:
+jobs:
 #   build:
 #     runs-on: ubuntu-latest
 #     steps:
@@ -26,7 +26,7 @@ on:
 #           registry-url: https://npm.pkg.github.com/
 #       - run: npm ci
 #       - run: npm run deploy
-build-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
