@@ -34,5 +34,17 @@ describe('delimitedTextInputServiceFactory', () => {
         .getItems()[1].value
       ).toEqual('Kirk');
     });
+    test('#setFocus', done => {
+      expect(factory('-', () => done())
+        .setItem('Kirk', 1)
+        .setFocus(1)
+        .getItems()[1].focus
+      ).toEqual(true);
+      expect(factory('-', () => done())
+        .setItem('Kirk', 1)
+        .setFocus()
+        .getItems()[1].focus
+      ).toEqual(false);
+    });
   });
 });
