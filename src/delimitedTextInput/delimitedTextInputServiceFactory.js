@@ -50,14 +50,6 @@ class Service {
     this._setState(this);
     return this;
   }
-  setFocus(idx) {
-    this._items.forEach(item => item.focus = false);
-    if (idx < this._items.length) {
-      this._items[idx].focus = true;
-    }
-    this._setState(this);
-    return this;
-  }
 }
 
 const instantiate = (delimiter, setState) => new Service(delimiter, setState);
