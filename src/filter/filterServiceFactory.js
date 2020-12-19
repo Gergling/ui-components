@@ -1,8 +1,17 @@
 // This needs to manage a structure of nestable filter constructs.
 
+import React from 'react';
+
+import BetweenFilter from './BetweenFilter';
+import BooleanFilter from './BooleanFilter';
+import StringFilter from './StringFilter';
+
 class FilterType {
   getStructure() {
     throw new Error('FilterType is an abstract class and getStructure must be overridden.');
+  }
+  getUIComponent() {
+    throw new Error('FilterType is an abstract class and getUIComponent must be overridden.');
   }
   setNot(not) {
     this._not = not;
@@ -31,15 +40,34 @@ class FilterTypeBetween extends FilterType {
       end: this._end
     };
   }
+  getUIComponent() {
+    return React.createElement(BetweenFilter);
+  }
 }
 
 // Checks whether a value constitutes empty or not
-class FilterTypeEmpty extends FilterType {
+class FilterTypeBoolean extends FilterType {
   getStructure() {
     return {
       type: 'empty',
       empty: this._not
     }
+  }
+  getUIComponent() {
+    return React.createElement(BooleanFilter);
+  }
+}
+
+// TODO: Also needs capacity to match partial strings.
+class FilterTypeString extends FilterType {
+  getStructure() {
+    return {
+      type: 'string',
+      empty: this._not
+    }
+  }
+  getUIComponent() {
+    return React.createElement(StringFilter);
   }
 }
 
@@ -72,11 +100,21 @@ class FilterTypeConditional extends FilterType {
   }
 }
 
+const filterTypeMapping = {
+  between: field => new FilterTypeBetween(field),
+  string: field => new FilterTypeString(field),
+  boolean: field => new FilterTypeBoolean(field),
+};
+
 class Field {
-  constructor(name, label, type) {
+  constructor(name, label, type, filterTypes) {
     this.name = name;
     this.label = label;
     this.type = type;
+    this._filterTypes = filterTypes;
+  }
+  get filterTypes() {
+    return this._filterTypes.map(filterType => filterTypeMapping[filterType](this));
   }
 }
 
@@ -88,25 +126,24 @@ class Instance {
     return this._fields;
   }
   addDate(name, label) {
-    this._fields.push(new Field(name, label, 'date'));
+    this._fields.push(new Field(name, label, 'date', [
+      'between',
+      'boolean',
+    ]));
     return this;
   }
   addBoolean(name, label) {
-    this._fields.push(new Field(name, label, 'boolean'));
+    this._fields.push(new Field(name, label, 'boolean', [
+      'boolean',
+    ]));
     return this;
   }
   addString(name, label) {
-    this._fields.push(new Field(name, label, 'string'));
+    this._fields.push(new Field(name, label, 'string', [
+      'string',
+      'boolean',
+    ]));
     return this;
-  }
-  conditional() {
-    return new FilterTypeConditional();
-  }
-  between() {
-    return new FilterTypeBetween();
-  }
-  empty() {
-    return new FilterTypeEmpty();
   }
 }
 

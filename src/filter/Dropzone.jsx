@@ -26,7 +26,7 @@ function selectBackgroundColor(isActive, canDrop) {
 }
 // TODO: Accept a "single" or "multi" mode depending on the number of children that should go into the model.
 // Needs some form of model management, including a getter and setter of some kind.
-export const Dropzone = () => {
+export const Dropzone = ({ children }) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     // TODO: Make a system to accept specific types.
       accept: 'any',
@@ -47,5 +47,6 @@ export const Dropzone = () => {
     Also need to include items already in this zone.
     Zone needs to "close" if it's occupied and can only take one item.
     Need a hover mechanism to lay out where things can be dropped properly.
+    {children}
   </div>);
 };

@@ -9,13 +9,15 @@ const style = {
   float: 'left',
 };
 
-export const DraggableItem = ({ name, label, type }) => {
+export const DraggableItem = ({ children }) => {
   const item = { name, type: 'any' };
   const [{ opacity }, drag] = useDrag({
       item,
       end(item, monitor) {
           const dropResult = monitor.getDropResult();
           if (item && dropResult) {
+            // Here we update the model.
+            // A specific field has been added to a specific area.
             console.log(item, dropResult)
               // let alertMessage = '';
               // const isDropAllowed = dropResult.allowedDropEffect === 'any' ||
@@ -36,6 +38,6 @@ export const DraggableItem = ({ name, label, type }) => {
       }),
   });
   return (<div ref={drag} style={{ ...style, opacity }}>
-    {label} ({type}) [{name}]
+    {children}
   </div>);
 };

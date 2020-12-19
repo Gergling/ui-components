@@ -8,13 +8,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import serviceFactory from './filterServiceFactory';
 
-import DateFilter from './DateFilter';
 import { Dropzone } from './Dropzone';
 import { DraggableItem } from './DraggableItem';
-
-const components = {
-  date: DateFilter
-};
 
 // Field configurations:
 // Quantifiable types can have the between filter
@@ -44,28 +39,63 @@ export default class LogicalFilter extends Component {
     super(props);
     this.serviceInstance = serviceFactory();
     props.initialise(this.serviceInstance);
-    this.state = {
-      items: this.serviceInstance.fields
-        .map(field => ({
-          // type: field.type,
-          type: 'any',
-          label: field.label,
-          name: field.name,
-          id: `option-${field.type}-${field.name}`
-        }))
-    };
+    this.state = {};
   }
-  renderFieldOption(field) {
+  handleSelectField(field) {
+    this.setState({
+      selectedField: field
+    });
+  }
+  renderFilter(filter) {
     return (
-      <div>{field.label} ({field.type})</div>
+      <li>
+        <DraggableItem>
+          {filter.getUIComponent()}
+        </DraggableItem>
+      </li>
     );
   }
-  renderItem(item, idx) {
-    console.log(item)
+  renderSelectedField() {
+    const field = this.state.selectedField;
     return (
-      <div>
-        {item.item.label} ({item.item.type})
-      </div>
+      <>
+        <div>
+          {field.type}: {field.label}
+        </div>
+        <div onClick={this.handleSelectField.bind(this, undefined)}>
+          (Cancel)
+        </div>
+      </>
+    );
+  }
+  renderFieldItem(field) {
+    return (
+      <li onClick={this.handleSelectField.bind(this, field)}>
+        {field.type}: {field.label}
+      </li>
+    );
+  }
+  renderFieldList() {
+    return (
+      <>
+        <div>Select a field to filter</div>
+        <ul>
+          {this.serviceInstance.fields.map(this.renderFieldItem.bind(this))}
+        </ul>
+      </>
+    );
+  }
+  renderFields() {
+    return this.state.selectedField ? this.renderSelectedField() : this.renderFieldList();
+  }
+  renderSelectedFieldOptions() {
+    return (
+      <>
+        <ul>
+          {this.state.selectedField.filterTypes.map(this.renderFilter)}
+        </ul>
+        <Dropzone><div>A child!</div></Dropzone>
+      </>
     );
   }
   render() {
@@ -74,9 +104,9 @@ export default class LogicalFilter extends Component {
         <DndProvider backend={HTML5Backend}>
           <div>The Logical Filter</div>
           <div>
-            {this.state.items.map(field => (<DraggableItem name={field.name} type={field.type} label={field.label} />))}
+            {this.renderFields()}
           </div>
-          <Dropzone />
+          {this.state.selectedField ? this.renderSelectedFieldOptions() : ''}
         </DndProvider>
       </div>
     );

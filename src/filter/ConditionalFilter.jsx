@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import serviceFactory from './filterServiceFactory';
 
-import DateFilter from './DateFilter';
+// import DateFilter from './DateFilter';
 
 // In theory we could use a logical filter here, which ofc can take any filter itself.
 
