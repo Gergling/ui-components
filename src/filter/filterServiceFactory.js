@@ -7,16 +7,44 @@ import BooleanFilter from './BooleanFilter';
 import StringFilter from './StringFilter';
 
 class FilterType {
+  // TODO: Decide whether this is relevant anymore, since the component will choose the structure.
   getStructure() {
     throw new Error('FilterType is an abstract class and getStructure must be overridden.');
   }
   getUIComponent() {
-    throw new Error('FilterType is an abstract class and getUIComponent must be overridden.');
+    throw new Error('FilterType is an abstract class and getUIComponentClass must be overridden.');
   }
   setNot(not) {
     this._not = not;
     return this;
   }
+  createModel() {
+    return new FilterModel(this);
+  }
+}
+
+class FilterModel {
+  constructor(type) {
+    this._type = type;
+  }
+  get type() {
+    return this._type;
+  }
+  get value() {
+    return this._value;
+  }
+  setValue(value) {
+    this._value = value;
+    return this;
+  }
+  createUIComponent() {
+    console.log('creating component for', this.type)
+    return createElement(this.type.getUIComponentClass(), this);
+  }
+}
+
+function createElement(JSXClass, model) {
+  return React.createElement(JSXClass, { model });
 }
 
 // FilterType classes
@@ -40,8 +68,8 @@ class FilterTypeBetween extends FilterType {
       end: this._end
     };
   }
-  getUIComponent() {
-    return React.createElement(BetweenFilter);
+  getUIComponentClass() {
+    return BetweenFilter;
   }
 }
 
@@ -53,8 +81,8 @@ class FilterTypeBoolean extends FilterType {
       empty: this._not
     }
   }
-  getUIComponent() {
-    return React.createElement(BooleanFilter);
+  getUIComponentClass() {
+    return BooleanFilter;
   }
 }
 
@@ -66,8 +94,8 @@ class FilterTypeString extends FilterType {
       empty: this._not
     }
   }
-  getUIComponent() {
-    return React.createElement(StringFilter);
+  getUIComponentClass() {
+    return StringFilter;
   }
 }
 
@@ -100,12 +128,6 @@ class FilterTypeConditional extends FilterType {
   }
 }
 
-const filterTypeMapping = {
-  between: field => new FilterTypeBetween(field),
-  string: field => new FilterTypeString(field),
-  boolean: field => new FilterTypeBoolean(field),
-};
-
 class Field {
   constructor(name, label, type, filterTypes) {
     this.name = name;
@@ -114,7 +136,7 @@ class Field {
     this._filterTypes = filterTypes;
   }
   get filterTypes() {
-    return this._filterTypes.map(filterType => filterTypeMapping[filterType](this));
+    return this._filterTypes.map(filterType => new filterType.type(this, filterType.label));
   }
 }
 
@@ -127,21 +149,21 @@ class Instance {
   }
   addDate(name, label) {
     this._fields.push(new Field(name, label, 'date', [
-      'between',
-      'boolean',
+      { type: FilterTypeBoolean, label: 'not' },
+      { type: FilterTypeBetween, label: 'between two dates' },
     ]));
     return this;
   }
   addBoolean(name, label) {
     this._fields.push(new Field(name, label, 'boolean', [
-      'boolean',
+      { type: FilterTypeBoolean, label: 'match' },
     ]));
     return this;
   }
   addString(name, label) {
     this._fields.push(new Field(name, label, 'string', [
-      'string',
-      'boolean',
+      { type: FilterTypeString, label: 'match' },
+      { type: FilterTypeBoolean, label: 'not' },
     ]));
     return this;
   }
