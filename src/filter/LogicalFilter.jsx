@@ -79,9 +79,9 @@ export default class LogicalFilter extends Component {
     return (
       <>
         <div>Select a field to filter</div>
-        <ul>
+        <InlineList>
           {this.serviceInstance.fields.map(this.renderFieldItem.bind(this))}
-        </ul>
+        </InlineList>
       </>
     );
   }
@@ -91,10 +91,14 @@ export default class LogicalFilter extends Component {
   renderSelectedFieldOptions() {
     return (
       <>
-        <ul>
-          {this.state.selectedField.filterTypes.map(this.renderFilter)}
-        </ul>
-        <Dropzone><div>A child!</div></Dropzone>
+        <Section>
+          <InlineList>
+            {this.state.selectedField.filterTypes.map(this.renderFilter.bind(this))}
+          </InlineList>
+        </Section>
+        <Section>
+          <Dropzone>{ this.state.rootModel ? this.state.rootModel.createUIComponent() : 'Show me everything, filter nothing' }</Dropzone>
+        </Section>
       </>
     );
   }
@@ -103,9 +107,9 @@ export default class LogicalFilter extends Component {
       <div>
         <DndProvider backend={HTML5Backend}>
           <div>The Logical Filter</div>
-          <div>
+          <Section>
             {this.renderFields()}
-          </div>
+          </Section>
           {this.state.selectedField ? this.renderSelectedFieldOptions() : ''}
         </DndProvider>
       </div>
