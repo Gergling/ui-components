@@ -63,12 +63,13 @@ export default class LogicalFilter extends Component {
     const field = this.state.selectedField;
     return (
       <>
-        <div>
+        <span>
           {field.type}: {field.label}
-        </div>
-        <div onClick={this.handleSelectField.bind(this, undefined)}>
-          (Cancel)
-        </div>
+        </span>
+
+        <span onClick={this.handleSelectField.bind(this, undefined)}>
+          <CancelButton style={style} />
+        </span>
       </>
     );
   }
