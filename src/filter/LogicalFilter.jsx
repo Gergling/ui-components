@@ -40,7 +40,11 @@ export default class LogicalFilter extends Component {
     super(props);
     this.serviceInstance = serviceFactory();
     props.initialise(this.serviceInstance);
-    this.state = {};
+  handleOnDrop(filter) {
+    this.serviceInstance.root = filter.createModel();
+    this.setState({
+      rootModel: this.serviceInstance.root
+    });
   }
   handleSelectField(field) {
     this.setState({
