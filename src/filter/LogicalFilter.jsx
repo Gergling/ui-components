@@ -50,8 +50,7 @@ export default class LogicalFilter extends Component {
   renderFilter(filter) {
     return (
       <li>
-        <DraggableItem>
-          {filter.getUIComponent()}
+        <DraggableItem onDrop={this.handleOnDrop.bind(this, filter)}>
         </DraggableItem>
       </li>
     );

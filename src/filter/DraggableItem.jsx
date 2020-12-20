@@ -9,13 +9,14 @@ const style = {
   float: 'left',
 };
 
-export const DraggableItem = ({ children }) => {
+export const DraggableItem = ({ children, onDrop }) => {
   const item = { name, type: 'any' };
   const [{ opacity }, drag] = useDrag({
       item,
       end(item, monitor) {
           const dropResult = monitor.getDropResult();
           if (item && dropResult) {
+            onDrop(item, dropResult);
             // Here we update the model.
             // A specific field has been added to a specific area.
             console.log(item, dropResult)
