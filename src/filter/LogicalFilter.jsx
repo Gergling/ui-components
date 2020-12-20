@@ -8,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import serviceFactory from './filterServiceFactory';
 
+import CancelButton from '../icons/Cancel';
 import { Dropzone } from './Dropzone';
 import { DraggableItem } from './DraggableItem';
 
