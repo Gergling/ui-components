@@ -53,11 +53,13 @@ export default class LogicalFilter extends Component {
   }
   renderFilter(filter) {
     return (
-      <li>
-        <DraggableItem onDrop={this.handleOnDrop.bind(this, filter)}>
-        </DraggableItem>
-      </li>
+      <DraggableItem onDrop={this.handleOnDrop.bind(this, filter)}>
+        {filter.constructor.name}
+      </DraggableItem>
     );
+  }
+  renderFilterListitem(filter) {
+    return (<li>{this.renderFilter(filter)}</li>);
   }
   renderSelectedField() {
     const field = this.state.selectedField;
@@ -98,11 +100,11 @@ export default class LogicalFilter extends Component {
       <>
         <Section>
           <InlineList>
-            {this.state.selectedField.filterTypes.map(this.renderFilter.bind(this))}
+            {this.state.selectedField.filterTypes.map(this.renderFilterListitem.bind(this))}
           </InlineList>
         </Section>
         <Section>
-          <Dropzone>{ this.state.rootModel ? this.state.rootModel.createUIComponent() : 'Show me everything, filter nothing' }</Dropzone>
+          <Dropzone>{ this.state.rootModel ? this.renderFilter(this.state.rootModel) : 'Show me everything, filter nothing' }</Dropzone>
         </Section>
       </>
     );
