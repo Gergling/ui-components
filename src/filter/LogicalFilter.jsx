@@ -35,6 +35,23 @@ Ok so having used Nestable, I've found a number of features I need out of a poss
 
 */
 
+const Section = styled.div`
+  padding: 20px;
+  border: solid 1px grey;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  overflow: hidden;
+`;
+
+const InlineList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+const CancelButton = styled(CancelButtonBase)`
+  margin-left: 3px;
+`;
+
 export default class LogicalFilter extends Component {
   constructor(props) {
     super(props);
