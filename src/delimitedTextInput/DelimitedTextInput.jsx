@@ -86,7 +86,7 @@ export default class DelimitedTextInput extends Component {
   }
   renderItem(item, idx) {
     return (
-      <>
+      <span key={idx}>
         { idx === 0 ? '' : this.renderDelimiter() }
         <Input
           className="delimitedTextInput__input"
@@ -98,7 +98,7 @@ export default class DelimitedTextInput extends Component {
           onKeyDown={() => this.handleKeyDown(idx)}
           ref={this.handleInputReference.bind(this)}
         />
-      </>
+      </span>
     );
   }
   renderDelimiter() {
