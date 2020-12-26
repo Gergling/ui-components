@@ -87,7 +87,7 @@ export default class LogicalFilter extends Component {
         </span>
 
         <span onClick={this.handleSelectField.bind(this, undefined)}>
-          <CancelButton style={style} />
+          <CancelButton />
         </span>
       </>
     );
