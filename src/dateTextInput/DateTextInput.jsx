@@ -7,7 +7,7 @@ import DelimitedTextInput from '../delimitedTextInput/DelimitedTextInput';
 
 function getDate(day, month, year) {
   const date = new Date(year, month - 1, day);
-  return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year * 1 ? date : undefined;
+  return date.getDate() === day * 1 && date.getMonth() === month - 1 && date.getFullYear() === year * 1 ? date : undefined;
 }
 
 function getFormatIDX(format) {
