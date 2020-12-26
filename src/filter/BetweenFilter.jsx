@@ -29,11 +29,13 @@ export default class BetweenFilter extends Component {
   handleChange(propValue, prop) {
     const model = { value: {} };
     model.value[prop] = propValue;
-    this.props.onUpdate(model);
     this.setState(model);
   }
+  componentDidUpdate() {
+    this.props.onUpdate(this.state);
+  }
   renderField(prop) {
-    return (this.getMode() === 'date' ? <DateTextInput onUpdate={e => this.handleChange(e, prop)} /> : <input type="text" value={this.state.value[prop]} onChange={e => this.handleChange(e.target.value, prop)} />);
+    return (this.getMode() === 'date' ? <DateTextInput onUpdate={value => this.handleChange(value, prop)} /> : <input type="text" value={this.state.value[prop]} onChange={e => this.handleChange(e.target.value, prop)} />);
   }
   render() {
     return (
