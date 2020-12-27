@@ -140,7 +140,7 @@ class Field {
   }
 }
 
-class Instance {
+class FieldCollection {
   constructor() {
     this._fields = [];
   }
@@ -172,6 +172,6 @@ class Instance {
   }
 }
 
-const instantiate = () => new Instance;
+const instantiate = () => new FieldCollection;
 
 export default instantiate;
