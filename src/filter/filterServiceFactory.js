@@ -136,7 +136,7 @@ class Field {
     this._filterTypes = filterTypes;
   }
   get filterTypes() {
-    return this._filterTypes.map(filterType => new filterType.type(this, filterType.label));
+    return this._filterTypes.map(filterTypeFactory => filterTypeFactory());
   }
 }
 
@@ -149,21 +149,24 @@ class Instance {
   }
   addDate(name, label) {
     this._fields.push(new Field(name, label, 'date', [
-      { type: FilterTypeBoolean, label: 'not' },
-      { type: FilterTypeBetween, label: 'between two dates' },
+      () => new FilterTypeBoolean(),
+      () => {
+        const filterType = new FilterTypeBetween();
+        return filterType.setMode('date');
+      },
     ]));
     return this;
   }
   addBoolean(name, label) {
     this._fields.push(new Field(name, label, 'boolean', [
-      { type: FilterTypeBoolean, label: 'match' },
+      () => FilterTypeBoolean(),
     ]));
     return this;
   }
   addString(name, label) {
     this._fields.push(new Field(name, label, 'string', [
-      { type: FilterTypeString, label: 'match' },
-      { type: FilterTypeBoolean, label: 'not' },
+      () => FilterTypeString(),
+      () => FilterTypeBoolean(),
     ]));
     return this;
   }
