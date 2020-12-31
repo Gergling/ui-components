@@ -130,11 +130,11 @@ export default class LogicalFilter extends Component {
   }
   renderSelectedFieldOptions() {
     return (
-        <Section>
-          <InlineList>
-            {this.state.selectedField.filterTypes.map(this.renderFilterListitem.bind(this))}
-          </InlineList>
-        </Section>
+      <Section>
+        <InlineList>
+          {this.state.selectedField.filterTypes.map(this.renderFilterListitem.bind(this))}
+        </InlineList>
+      </Section>
     );
   }
   render() {
