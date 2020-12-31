@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 import LogicalFilter from '../src/filter/LogicalFilter';
+import BetweenFilter from '../src/filter/BetweenFilter';
 
 // TODO: IF you use a separate function non-initialisation updates, it will be a lot tidier.
 function initialiseComplexNestedFilter(options) {
@@ -45,5 +46,15 @@ function initialiseComplexNestedFilter(options) {
   };
 }
 
+const betweenFilterModel = {
+  value: {
+    start: new Date('2020-12-26'),
+    end: new Date('2020-12-26')
+  }
+};
+
 storiesOf('Filter', module)
-  .add('Default filter', () => <LogicalFilter initialise={initialiseComplexNestedFilter} onUpdate={action('Date updated')} />)
+  .add('LogicalFilter', () => <LogicalFilter initialise={initialiseComplexNestedFilter} onUpdate={action('Date updated')} />)
+  .add('BetweenFilter empty', () => <BetweenFilter onUpdate={action('Date updated')} />)
+  .add('BetweenFilter empty date mode', () => <BetweenFilter mode='date' onUpdate={action('Date updated')} />)
+  .add('BetweenFilter with a starting value', () => <BetweenFilter model={betweenFilterModel} onUpdate={action('Date updated')} />)
