@@ -136,9 +136,6 @@ export default class LogicalFilter extends Component {
             {this.state.selectedField.filterTypes.map(this.renderFilterListitem.bind(this))}
           </InlineList>
         </Section>
-        <Section>
-          <Dropzone onDrop={this.handleDropzoneOnDrop.bind(this)}>{ this.state.rootModel ? this.renderFilter() : 'Show me everything, filter nothing' }</Dropzone>
-        </Section>
       </>
     );
   }
@@ -151,6 +148,9 @@ export default class LogicalFilter extends Component {
             {this.renderFields()}
           </Section>
           {this.state.selectedField ? this.renderSelectedFieldOptions() : ''}
+          <Section>
+            <Dropzone onDrop={this.handleDropzoneOnDrop.bind(this)}>{ this.state.rootModel ? this.renderFilter() : 'Show me everything, filter nothing' }</Dropzone>
+          </Section>
         </DndProvider>
       </div>
     );
