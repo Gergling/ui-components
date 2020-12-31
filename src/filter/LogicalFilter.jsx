@@ -8,7 +8,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import serviceFactory from './filterServiceFactory';
 
-import CancelButton from '../icons/Cancel';
+import CancelButtonBase from '../icons/Cancel';
+
 import { Dropzone } from './Dropzone';
 import { DraggableItem } from './DraggableItem';
 
@@ -19,11 +20,6 @@ import { DraggableItem } from './DraggableItem';
 // Multiselection...
 
 // Field configuration input needs to include the field name and type of field fed with the "validation" parameters (e.g. selection requires all the available items)
-
-function renderComponent(reactElementName, props, containerElement, callback) {
-  const reactElement = React.createElement(components[reactElementName], props);
-  ReactDOM.render(reactElement, containerElement, callback);
-}
 
 // Anything can be put in a logical filter, but it can only take one thing. It constitutes the root component.
 
@@ -57,26 +53,46 @@ export default class LogicalFilter extends Component {
     super(props);
     this.serviceInstance = serviceFactory();
     props.initialise(this.serviceInstance);
-  handleOnDrop(filter) {
-    this.serviceInstance.root = filter.createModel();
-    this.setState({
-      rootModel: this.serviceInstance.root
-    });
+    this.state = {
+      // Temporary
+      selectedField: this.serviceInstance.fields[0]
+      // rootModel:
+    };
+  }
+  setFilterModel(rootModel) {
+    this.serviceInstance.root = rootModel;
+    this.setState({ rootModel });
+  }
+  handleDraggableOnDrop(filterType) {
+    return filterType.createModel();
+  }
+  handleDropzoneOnDrop(item) {
+    this.setFilterModel(item.onDrop());
   }
   handleSelectField(field) {
     this.setState({
       selectedField: field
     });
   }
-  renderFilter(filter) {
+  renderFilter() {
+    const filterModel = this.state.rootModel;
     return (
-      <DraggableItem onDrop={this.handleOnDrop.bind(this, filter)}>
-        {filter.constructor.name}
+      <DraggableItem onDrop={() => filterModel}>
+        {filterModel.createUIComponent()}
+        <span onClick={this.setFilterModel.bind(this, undefined)}>
+          <CancelButton />
+        </span>
       </DraggableItem>
     );
   }
-  renderFilterListitem(filter) {
-    return (<li>{this.renderFilter(filter)}</li>);
+  renderFilterListitem(filterModel) {
+    return (
+      <li>
+        <DraggableItem onDrop={this.handleDraggableOnDrop.bind(this, filterModel)}>
+          {filterModel.constructor.name}
+        </DraggableItem>
+      </li>
+    );
   }
   renderSelectedField() {
     const field = this.state.selectedField;
@@ -121,7 +137,7 @@ export default class LogicalFilter extends Component {
           </InlineList>
         </Section>
         <Section>
-          <Dropzone>{ this.state.rootModel ? this.renderFilter(this.state.rootModel) : 'Show me everything, filter nothing' }</Dropzone>
+          <Dropzone onDrop={this.handleDropzoneOnDrop.bind(this)}>{ this.state.rootModel ? this.renderFilter() : 'Show me everything, filter nothing' }</Dropzone>
         </Section>
       </>
     );

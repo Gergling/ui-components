@@ -38,13 +38,12 @@ class FilterModel {
     return this;
   }
   createUIComponent() {
-    console.log('creating component for', this.type)
-    return createElement(this.type.getUIComponentClass(), this);
+    return createElement(this.type.getUIComponentClass(), this.type.getUIComponentProperties(model => this.setValue(model.value)));
   }
 }
 
-function createElement(JSXClass, model) {
-  return React.createElement(JSXClass, { model });
+function createElement(JSXClass, props) {
+  return React.createElement(JSXClass, props);
 }
 
 // FilterType classes
@@ -52,6 +51,13 @@ function createElement(JSXClass, model) {
 
 // Handles filtering between two values
 class FilterTypeBetween extends FilterType {
+  setMode(mode) {
+    this._mode = mode;
+    return this;
+  }
+  get mode() {
+    return this._mode;
+  }
   setStart(start) {
     this._start = start;
     return this;
@@ -126,6 +132,8 @@ class FilterTypeConditional extends FilterType {
       children: this._children.map(filterType => filterType.getStructure())
     };
   }
+  getUIComponentClass() {
+    return ConditionalFilter;
 }
 
 class Field {
@@ -142,7 +150,12 @@ class Field {
 
 class FieldCollection {
   constructor() {
-    this._fields = [];
+    this._fields = [
+      new Field('conditional', 'Conditional', 'conditional', [
+        () => new FilterTypeBoolean(),
+        () => new FilterTypeConditional(),
+      ])
+    ];
   }
   get fields() {
     return this._fields;
@@ -150,10 +163,7 @@ class FieldCollection {
   addDate(name, label) {
     this._fields.push(new Field(name, label, 'date', [
       () => new FilterTypeBoolean(),
-      () => {
-        const filterType = new FilterTypeBetween();
-        return filterType.setMode('date');
-      },
+      () => (new FilterTypeBetween()).setMode('date'),
     ]));
     return this;
   }

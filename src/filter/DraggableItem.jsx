@@ -10,16 +10,15 @@ const style = {
 };
 
 export const DraggableItem = ({ children, onDrop }) => {
-  const item = { name, type: 'any' };
   const [{ opacity }, drag] = useDrag({
-      item,
+      item: { name: 'some-draggable-item', type: 'any', onDrop },
       end(item, monitor) {
           const dropResult = monitor.getDropResult();
           if (item && dropResult) {
             onDrop(item, dropResult);
             // Here we update the model.
             // A specific field has been added to a specific area.
-            console.log(item, dropResult)
+            // console.log(item, dropResult)
               // let alertMessage = '';
               // const isDropAllowed = dropResult.allowedDropEffect === 'any' ||
               //     dropResult.allowedDropEffect === dropResult.dropEffect;

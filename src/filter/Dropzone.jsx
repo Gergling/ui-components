@@ -21,32 +21,31 @@ function selectBackgroundColor(isActive, canDrop) {
       return 'darkkhaki';
   }
   else {
-      return '#222';
+      return 'grey';
   }
 }
 // TODO: Accept a "single" or "multi" mode depending on the number of children that should go into the model.
 // Needs some form of model management, including a getter and setter of some kind.
-export const Dropzone = ({ children }) => {
-  const [{ canDrop, isOver }, drop] = useDrop({
+export const Dropzone = ({ children, name, onDrop }) => {
+  const [{ canDrop, isOver, isOverCurrent }, drop] = useDrop({
     // TODO: Make a system to accept specific types.
       accept: 'any',
-      drop: () => ({
-          name: `Dustbin`,
+      drop: (item, monitor) => {
+        onDrop(item);
+        return {
+          name,
           allowedDropEffect: 'any',
-      }),
+        }
+      },
       collect: (monitor) => ({
           isOver: monitor.isOver(),
           canDrop: monitor.canDrop(),
+        isOverCurrent: monitor.isOver({ shallow: true }),
       }),
   });
-  const isActive = canDrop && isOver;
+  const isActive = canDrop && isOver && isOverCurrent;
   const backgroundColor = selectBackgroundColor(isActive, canDrop);
   return (<div ref={drop} style={{ ...style, backgroundColor }}>
-    <div>Dropzone!</div>
-    Mostly this should just be an area that looks decorative.
-    Also need to include items already in this zone.
-    Zone needs to "close" if it's occupied and can only take one item.
-    Need a hover mechanism to lay out where things can be dropped properly.
     {children}
   </div>);
 };
