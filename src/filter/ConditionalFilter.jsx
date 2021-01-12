@@ -19,7 +19,6 @@ export default class ConditionalFilter extends Component {
     });
   }
   renderChild(child, key) {
-    console.log('render child', child)
     // TODO: Needs another draggable item and the model component.
     return (
       <li key={key}>
