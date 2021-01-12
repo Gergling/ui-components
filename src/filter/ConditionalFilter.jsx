@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import serviceFactory from './filterServiceFactory';
 
+import CancelButton from '../icons/Cancel';
+
 import { Dropzone } from './Dropzone';
 import { DraggableItem } from './DraggableItem';
 
@@ -12,21 +14,23 @@ export default class ConditionalFilter extends Component {
     this.state = { childModels: [] };
   }
   handleOnDrop(item) {
-    console.log('conditional onDrop',item)
     this.state.childModels.push(item.onDrop());
     this.setState({
       childModels: this.state.childModels
     });
   }
+  handleChildRemoval(childToRemove) {
+    const children = this.state.childModels.filter(child => child !== childToRemove);
+    this.setState({ childModels: children });
+  }
   renderChild(child, key) {
-    // TODO: Needs another draggable item and the model component.
     return (
       <li key={key}>
         <DraggableItem onDrop={() => child}>
           {child.createUIComponent()}
-          {/* <span onClick={this.setState({ childModels: undefined })}>
+          <span onClick={this.handleChildRemoval.bind(this, child)}>
             <CancelButton />
-          </span> */}
+          </span>
         </DraggableItem>
       </li>
     );
