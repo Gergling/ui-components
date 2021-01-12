@@ -28,10 +28,9 @@ function selectBackgroundColor(isActive, canDrop) {
 // Needs some form of model management, including a getter and setter of some kind.
 export const Dropzone = ({ children, name, onDrop }) => {
   const [{ canDrop, isOver, isOverCurrent }, drop] = useDrop({
-    // TODO: Make a system to accept specific types.
       accept: 'any',
-      drop: (item, monitor) => {
-        onDrop(item);
+    drop: item => {
+      if (isOverCurrent) {onDrop(item, name);}
         return {
           name,
           allowedDropEffect: 'any',
