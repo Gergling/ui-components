@@ -23,10 +23,12 @@ const VerticalCorner = styled(VerticalBar)`
 
 const HorizontalContainer = styled.div`
   display: flex;
-  flex-direction: column;
-`;
-const HorizontalSpacer = styled.div`
-  width: 5px;
+const HorizontalContainer = () => (
+  <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+    <HorizontalSpacer/>
+    <HorizontalBar/>
+  </div>
+);
   flex-grow: 1;
 `;
 const HorizontalBar = styled(HorizontalSpacer)`
@@ -41,10 +43,7 @@ class Brace extends Component {
           {this.props.top ? <VerticalSpacer/> : <VerticalBar/>}
           {this.props.bottom ? <VerticalCorner/> : <VerticalBar/>}
         </div>
-        <HorizontalContainer>
-          <HorizontalSpacer/>
-          <HorizontalBar/>
-        </HorizontalContainer>
+        <HorizontalContainer />
       </ColumnContainer>
     );
   }
@@ -65,6 +64,8 @@ export default class TreeList extends Component {
   }
   render() {
     return (
+      <ColumnContainer>
+        <HorizontalContainer />
       <ListContainer>
         {this.props.children.map(this.renderChild)}
       </ListContainer>
