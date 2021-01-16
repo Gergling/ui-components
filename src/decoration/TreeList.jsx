@@ -6,6 +6,8 @@ const ColumnContainer = styled.div`
 `;
 const ListContainer = styled.ul`
   list-style: none;
+  padding: 0;
+  margin: 0;
 `;
 const ListItem = styled.li``;
 const VerticalSpacer = styled.div`
@@ -21,14 +23,14 @@ const VerticalCorner = styled(VerticalBar)`
   height: 1px;
 `;
 
-const HorizontalContainer = styled.div`
-  display: flex;
 const HorizontalContainer = () => (
   <div style={{ display: 'flex', 'flex-direction': 'column' }}>
     <HorizontalSpacer/>
     <HorizontalBar/>
   </div>
 );
+const HorizontalSpacer = styled.div`
+  width: 5px;
   flex-grow: 1;
 `;
 const HorizontalBar = styled(HorizontalSpacer)`
@@ -66,9 +68,10 @@ export default class TreeList extends Component {
     return (
       <ColumnContainer>
         <HorizontalContainer />
-      <ListContainer>
-        {this.props.children.map(this.renderChild)}
-      </ListContainer>
+        <ListContainer>
+          {this.props.children.map(this.renderChild)}
+        </ListContainer>
+      </ColumnContainer>
     );
   }
 }
