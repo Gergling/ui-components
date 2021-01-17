@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import HorizontalContainer from './HorizontalBar';
+
 const ColumnContainer = styled.div`
   display: flex;
 `;
@@ -29,26 +31,6 @@ const VerticalCorner = styled(VerticalBar)`
   height: 1px;
 `;
 
-const HorizontalContainer = ({ width, colour, thickness }) => (
-  <div style={{ display: 'flex', 'flex-direction': 'column' }}>
-    <HorizontalSpacer width={width} />
-    <HorizontalBar width={width} colour={colour} thickness={thickness} />
-  </div>
-);
-const HorizontalSpacer = styled.div`
-  width: ${props => props.width};
-  flex-grow: 1;
-`;
-HorizontalSpacer.defaultProps = { width: '5px' };
-
-const HorizontalBar = styled(HorizontalSpacer)`
-  border-style: solid;
-  border-width: 0;
-  border-top-width: ${props => props.thickness};
-  border-color: ${props => props.colour};
-`;
-HorizontalBar.defaultProps = { colour: 'black', thickness: '1px' };
-
 class Brace extends Component {
   renderVerticalBar() {
     return <VerticalBar colour={this.props.colour} thickness={this.props.thickness} />;
@@ -66,7 +48,6 @@ class Brace extends Component {
   }
 }
 
-// TODO: Needs props implemented.
 export default class TreeList extends Component {
   getHorizontalSpacerWidth() {
     return this.props.spacing;
