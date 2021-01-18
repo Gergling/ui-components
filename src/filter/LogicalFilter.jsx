@@ -9,6 +9,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import serviceFactory from './filterServiceFactory';
 
 import CancelButtonBase from '../icons/Cancel';
+import GripIcon from '../icons/Grip';
 
 import { Dropzone } from './Dropzone';
 import { DraggableItem } from './DraggableItem';
@@ -76,8 +77,9 @@ export default class LogicalFilter extends Component {
   }
   renderFilter() {
     const filterModel = this.state.rootModel;
+    const onDrop = () => filterModel;
     return (
-      <DraggableItem onDrop={() => filterModel}>
+      <DraggableItem onDrop={onDrop}>
         {filterModel.createUIComponent()}
         <span onClick={this.setFilterModel.bind(this, undefined)}>
           <CancelButton />
@@ -86,9 +88,18 @@ export default class LogicalFilter extends Component {
     );
   }
   renderFilterListitem(filterModel) {
+    const styleDraggable = {
+      marginRight: '1.5rem',
+      marginBottom: '1.5rem',
+      float: 'left',
+    };
+    const styleGripIcon = {
+      marginRight: '3px'
+    };
     return (
       <li>
-        <DraggableItem onDrop={this.handleDraggableOnDrop.bind(this, filterModel)}>
+        <DraggableItem style={styleDraggable} onDrop={this.handleDraggableOnDrop.bind(this, filterModel)}>
+          <GripIcon style={styleGripIcon} />
           {filterModel.constructor.name}
         </DraggableItem>
       </li>
@@ -147,7 +158,7 @@ export default class LogicalFilter extends Component {
           </Section>
           {this.state.selectedField ? this.renderSelectedFieldOptions() : ''}
           <Section>
-            <Dropzone onDrop={this.handleDropzoneOnDrop.bind(this)}>{ this.state.rootModel ? this.renderFilter() : 'Show me everything, filter nothing' }</Dropzone>
+            <Dropzone onDrop={this.handleDropzoneOnDrop.bind(this)}>{ this.state.rootModel ? this.renderFilter() : <div style={{color: 'black'}}>Drag fields here to filter</div> }</Dropzone>
           </Section>
         </DndProvider>
       </div>
