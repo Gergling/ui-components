@@ -7,12 +7,4 @@ const Span = styled.span`
   color: red;
 `;
 
-export default class LogicalFilter extends Component {
-  render() {
-    return (
-      <Span style={this.props.style || {}}>
-        <FontAwesomeIcon icon={faTimes} />
-      </Span>
-    );
-  }
-}
+export default ({ style }) => <Span style={style || {}}><FontAwesomeIcon icon={faTimes} /></Span>
