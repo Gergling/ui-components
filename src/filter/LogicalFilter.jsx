@@ -52,7 +52,12 @@ const CancelButton = styled(CancelButtonBase)`
 export default class LogicalFilter extends Component {
   constructor(props) {
     super(props);
-    this.serviceInstance = serviceFactory();
+    this.serviceInstance = serviceFactory()
+      .setUpdate(() => {
+        if (this.serviceInstance.root) {
+          console.log('root update:', this.serviceInstance.root.getStructure())
+        }
+      });
     props.initialise(this.serviceInstance);
     this.state = {
       // Temporary
@@ -61,7 +66,6 @@ export default class LogicalFilter extends Component {
     };
   }
   setFilterModel(rootModel) {
-    this.serviceInstance.root = rootModel;
     this.setState({ rootModel });
   }
   handleDraggableOnDrop(filterType) {
