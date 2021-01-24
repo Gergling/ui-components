@@ -16,7 +16,7 @@ const HorizontalBar = styled(HorizontalSpacer)`
 HorizontalBar.defaultProps = { colour: 'black', thickness: '1px' };
 
 const HorizontalContainer = ({ width, colour, thickness }) => (
-  <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
     <HorizontalSpacer width={width} />
     <HorizontalBar width={width} colour={colour} thickness={thickness} />
   </div>
