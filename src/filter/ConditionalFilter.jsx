@@ -90,7 +90,7 @@ export default class ConditionalFilter extends Component {
         </div>
         <div style={{ display: 'flex' }}>
           <HorizontalBar />
-          <div style={{ display: 'flex', 'flex-direction': 'column', 'justify-content': 'center' }}><div style={{ padding: '5px', border: 'solid 1px black' }}>{ this.state.operand }{ this.state.not ? ' NOT' : '' }</div></div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}><div style={{ padding: '5px', border: 'solid 1px black' }}>{ this.state.operand }{ this.state.not ? ' NOT' : '' }</div></div>
           { this.renderChildren() }
         </div>
       </>
