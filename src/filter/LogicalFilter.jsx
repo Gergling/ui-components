@@ -123,9 +123,9 @@ export default class LogicalFilter extends Component {
       </>
     );
   }
-  renderFieldItem(field) {
+  renderFieldItem(field, key) {
     return (
-      <li onClick={this.handleSelectField.bind(this, field)}>
+      <li key={key} onClick={this.handleSelectField.bind(this, field)}>
         {field.type}: {field.label}
       </li>
     );
