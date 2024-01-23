@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDrag } from 'react-dnd';
 
 const styleBase = {
@@ -13,7 +14,8 @@ export const DraggableItem = ({ children, onDrop, style }) => {
       end(item, monitor) {
           const dropResult = monitor.getDropResult();
           if (item && dropResult) {
-            onDrop(item, dropResult);
+            console.log('DraggableItem about to (not) call onDrop')
+            // onDrop(item, dropResult);
           }
       },
       collect: (monitor) => ({

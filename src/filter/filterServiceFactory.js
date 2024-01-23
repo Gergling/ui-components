@@ -40,15 +40,20 @@ class FilterType {
 
 // Model object which supplies the capacity to modify the value and generate the UI Component.
 class FilterModel {
-  constructor(type, onUpdate) {
+  constructor(type) {
+    console.error('creating', type)
     this._type = type;
-    this._onUpdate = onUpdate || (() => {});
+    this._onUpdate = [];
   }
   get type() {
     return this._type;
   }
   get value() {
     return this._value;
+  }
+  addUpdate(callback) {
+    this._onUpdate.push(callback);
+    return this;
   }
   getStructure() {
     return this.type.getStructure(this.value || {});
@@ -58,6 +63,7 @@ class FilterModel {
   }
   setValue(value) {
     this._value = value;
+    this._onUpdate.forEach(callback => callback());
     this.updateCollection();
     return this;
   }
@@ -193,25 +199,30 @@ class FieldCollection {
         () => new FilterTypeConditional(),
       ], this)
     ];
-    this._onUpdate = () => {};
+    this._onUpdate = [];
   }
   get fields() {
     return this._fields;
   }
   update(model) {
+    console.log('FieldCollection update')
     // TODO: Indicate when the root is being deleted.
     // Requires a separate function.
     if (!this._root) {
       this._root = model;
     }
-    this._onUpdate();
+    this._onUpdate.forEach(fnc => fnc(this.root));
     return this;
+  }
+  setRoot(model) {
+    this._root = model;
+    this._onUpdate.forEach(fnc => fnc(this.root));
   }
   get root() {
     return this._root;
   }
   setUpdate(fnc) {
-    this._onUpdate = fnc;
+    this._onUpdate.push(fnc);
     return this;
   }
   addDate(name, label) {

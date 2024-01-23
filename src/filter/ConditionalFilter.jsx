@@ -27,16 +27,22 @@ export default class ConditionalFilter extends Component {
   }
   componentDidUpdate(props) {
     // The update function is presumed to be a FilterModel.prototype.setModel function.
-    props.onUpdate(this.state);
+    // props.onUpdate(this.state);
   }
   handleOnDrop(item) {
     const model = item.onDrop();
-    if (this.state.childModels.indexOf(model) === -1) {
-      this.state.childModels.push(model);
+    // if (this.state.childModels.indexOf(model) === -1) {
+    //   this.state.childModels.push(model);
+    // }
+    console.log(model)
+    if (model.childModels.indexOf(model) === -1) {
+      model.childModels.push(model);
     }
-    this.setState({
-      childModels: this.state.childModels
-    });
+    props.onUpdate(model);
+    // TODO: Instead of setting the state, update the model.
+    // this.setState({
+    //   childModels: this.state.childModels
+    // });
   }
   handleChildRemoval(childToRemove) {
     const children = this.state.childModels.filter(child => child !== childToRemove);

@@ -53,9 +53,12 @@ export default class LogicalFilter extends Component {
   constructor(props) {
     super(props);
     this.serviceInstance = serviceFactory()
+      // TODO: The service should update the state when the current model is updated.
       .setUpdate(() => {
         if (this.serviceInstance.root) {
           console.log('root update:', this.serviceInstance.root.getStructure())
+          // this.setState({ rootModel: this.serviceInstance.root });
+          // this.setFilterModel(this.serviceInstance.root);
         }
       });
     props.initialise(this.serviceInstance);
@@ -69,10 +72,15 @@ export default class LogicalFilter extends Component {
     this.setState({ rootModel });
   }
   handleDraggableOnDrop(filterType) {
+    // TODO: Assign the model to the service root
     return filterType.createModel();
   }
   handleDropzoneOnDrop(item) {
+    // This gets passed the item from DraggableItem, so maybe DraggableItem should be passed a model?
+    // console.log(item.onDrop())
+    // TODO: Update the service.
     this.setFilterModel(item.onDrop());
+    // this.serviceInstance.setRoot(item.onDrop());
   }
   handleSelectField(field) {
     this.setState({
@@ -91,7 +99,7 @@ export default class LogicalFilter extends Component {
       </DraggableItem>
     );
   }
-  renderFilterListitem(filterModel) {
+  renderFilterListitem(filterType) {
     const styleDraggable = {
       marginRight: '1.5rem',
       marginBottom: '1.5rem',
@@ -102,9 +110,9 @@ export default class LogicalFilter extends Component {
     };
     return (
       <li>
-        <DraggableItem style={styleDraggable} onDrop={this.handleDraggableOnDrop.bind(this, filterModel)}>
+        <DraggableItem style={styleDraggable} onDrop={this.handleDraggableOnDrop.bind(this, filterType)}>
           <GripIcon style={styleGripIcon} />
-          {filterModel.constructor.name}
+          {filterType.constructor.name}
         </DraggableItem>
       </li>
     );
@@ -153,6 +161,7 @@ export default class LogicalFilter extends Component {
     );
   }
   render() {
+    console.log('Root rendered')
     return (
       <div>
         <DndProvider backend={HTML5Backend}>
